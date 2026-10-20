@@ -1,0 +1,1000 @@
+╔══════════════════════════════════════════════════════════════════════════════════╗
+║         🧠  multi agent hybrid — COMPLETE PROJECT GUIDE (For Everyone!)                   ║
+║         Explained Simply + Every Code File + Every Feature                     ║
+║         GitHub: github.com/avinash1041/multi-agent-hybrid-rag                  ║
+╚══════════════════════════════════════════════════════════════════════════════════╝
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ PART 1 — WHAT IS THIS PROJECT?  ()
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Imagine you have a VERY SMART FRIEND who helps you answer any question.
+
+But this friend is EXTRA special because:
+
+  📚  They first read ALL the books and papers you give them
+      (like your school textbooks, PDFs, reports)
+
+  🌍  If they don't find the answer in your books,
+      they go search the INTERNET for you
+
+  🤔  After they write an answer, a SECOND friend checks it
+      and says "Good job!" OR "Hey, you missed this part, try again!"
+
+  👀  And a THIRD friend is watching everything they do and
+      writing notes — so you can always go back and see exactly
+      what happened
+
+  🛠️  They also carry a special TOOLBOX (called MCP) with tools like:
+      - A calculator
+      - A search tool
+      - A summariser
+      - An entity finder
+
+That's multi agent hybrid!
+
+In developer words:
+  "A production-grade Multi-Agent AI system that answers questions
+   by combining a Hybrid RAG knowledge base with live web search,
+   orchestrated by LangGraph, traced by LangSmith, with MCP tools,
+   and deployed free on Streamlit Cloud."
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ PART 2 — WHY DO WE NEED THIS PROJECT?
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+PROBLEM 1: Normal ChatGPT doesn't know YOUR files
+--------------------------------------------------
+  You have a 200-page company report.
+  ChatGPT has never seen it.
+  You ask "What was our Q3 revenue?" → ChatGPT guesses or says "I don't know"
+
+  multi agent hybrid SOLUTION:
+  You upload your report → it reads, learns, and stores it →
+  now it can answer perfectly from YOUR documents
+
+PROBLEM 2: AI makes up answers (hallucination)
+-----------------------------------------------
+  A normal AI sometimes invents facts that sound real but aren't.
+  This is dangerous in business, medicine, law, finance.
+
+  multi agent hybrid SOLUTION:
+  Every answer is checked by a CRITIQUE AGENT.
+  It compares the answer to the actual sources.
+  If something is wrong → it sends the answer back for revision.
+  This loop continues until the answer is genuinely correct.
+
+PROBLEM 3: AI doesn't know today's news
+----------------------------------------
+  AI models have a "knowledge cutoff" — they don't know recent events.
+
+  multi agent hybrid SOLUTION:
+  A dedicated WEB SEARCH AGENT uses Tavily to fetch live internet results.
+  Your answer combines your private documents PLUS the latest web information.
+
+PROBLEM 4: You can't see what the AI is doing
+----------------------------------------------
+  Normal AI is a black box. You ask → it answers. You don't know HOW.
+
+  multi agent hybrid SOLUTION:
+  LangSmith traces EVERY step:
+  - Which agent ran?
+  - How long did it take?
+  - How many tokens were used?
+  - What did each agent output?
+  All visible in a beautiful dashboard.
+
+PROBLEM 5: Building AI costs money
+------------------------------------
+  Most production AI platforms cost $50–$500/month to run.
+
+  multi agent hybrid SOLUTION:
+  100% FREE using free tiers:
+  - Google Gemini API:  Free (15 requests/min)
+  - Qdrant Cloud:       Free (1 GB storage)
+  - LangSmith:          Free (5,000 traces/month)
+  - Tavily Search:      Free (1,000 searches/month)
+  - Streamlit Cloud:    Free deployment
+  - GitHub Actions:     Free CI/CD
+
+WHO NEEDS THIS PROJECT?
+  ✅  Companies wanting AI on their private documents
+  ✅  Researchers doing literature review
+  ✅  Students learning AI/ML engineering
+  ✅  Developers wanting a production AI portfolio project
+  ✅  Anyone who wants smarter, verified, cited answers
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ PART 3 — HOW THE WHOLE SYSTEM WORKS (Step by Step Journey of 1 Question)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+You type:  "What were Apple's Q3 2024 earnings?"
+
+STEP 1 — SUPERVISOR AGENT decides the plan
+  "Hmm, this question is about financial data.
+   I should search BOTH the knowledge base AND the web."
+  → Decision: BOTH
+
+STEP 2 — RAG AGENT searches your documents
+  → Takes your question
+  → Converts it to a special number pattern (embedding: [0.2, -0.5, 0.8 ...])
+  → Searches Qdrant database using DENSE search (meaning-based)
+  → ALSO searches using SPARSE/BM25 (keyword-based, like "Q3 2024")
+  → Combines both search results (Reciprocal Rank Fusion)
+  → Runs a RERANKER to pick the best 5 chunks
+  → Found: "Apple Q3 2024 revenue was $85.8B..." from your PDF
+
+STEP 3 — WEB AGENT searches the internet
+  → Sends query to Tavily
+  → Gets 5 live web results
+  → Organises them: "According to Reuters, Apple Q3 2024..."
+
+STEP 4 — SYNTHESIS AGENT writes the final answer
+  → Gets both RAG context AND web context
+  → Writes a complete, formatted, cited answer
+  → Includes [RAG: apple-report.pdf/page 12] and [Web: reuters.com]
+
+STEP 5 — CRITIQUE AGENT checks the answer
+  → Reads the answer
+  → Compares every claim to the source documents
+  → "All facts check out. No hallucination detected."
+  → Returns: GOOD ✅
+
+STEP 6 — Answer is shown to you
+  → Full markdown formatted answer
+  → Source citations included
+  → LangSmith trace link so you can see every detail
+
+ENTIRE JOURNEY TAKES: ~4-8 seconds
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ PART 4 — EVERY FILE EXPLAINED (The Project Map)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+PROJECT STRUCTURE:
+  multi-agent-hybrid-rag/
+  │
+  ├── app/                         ← ALL the main application code lives here
+  │   ├── config.py                ← The "Settings Brain" (56 lines)
+  │   ├── main.py                  ← The "Face" — Streamlit UI (319 lines)
+  │   │
+  │   ├── agents/                  ← The "Team of Workers"
+  │   │   ├── rag_agent.py         ← Document researcher (74 lines)
+  │   │   ├── web_agent.py         ← Internet searcher (73 lines)
+  │   │   ├── synthesis_agent.py   ← Answer writer (63 lines)
+  │   │   └── critique_agent.py    ← Quality checker (73 lines)
+  │   │
+  │   ├── rag/                     ← The "Library System"
+  │   │   ├── ingestion.py         ← Reads & stores documents (217 lines)
+  │   │   ├── retriever.py         ← Searches the library (172 lines)
+  │   │   └── reranker.py          ← Picks the best results (57 lines)
+  │   │
+  │   ├── mcp/
+  │   │   └── server.py            ← The "Toolbox Server" (258 lines)
+  │   │
+  │   └── graph/
+  │       └── workflow.py          ← The "Traffic Controller" (254 lines)
+  │
+  ├── scripts/
+  │   └── ingest.py                ← Command-line document uploader
+  │
+  ├── tests/
+  │   └── test_agents.py           ← Automated quality tests (160 lines)
+  │
+  ├── .github/workflows/
+  │   └── ci-cd.yml                ← Auto-deploy pipeline (74 lines)
+  │
+  ├── Dockerfile                   ← Container recipe (52 lines)
+  ├── docker-compose.yml           ← Start everything with 1 command (54 lines)
+  ├── requirements.txt             ← All libraries needed (35 lines)
+  ├── .env.example                 ← Secret keys template
+  └── README.md                    ← Full documentation
+
+  TOTAL CODE: ~1,700+ lines across 29 files
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ PART 5 — DEEP DIVE: EVERY FILE EXPLAINED WITH CODE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+FILE 1: app/config.py  (56 lines) — THE SETTINGS BRAIN
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+WHAT IT DOES:
+  Think of this as a MASTER KEY HOLDER.
+  Every other file in the project asks config.py for passwords,
+  URLs, and settings. It reads them from a .env file so secrets
+  are NEVER hardcoded in code.
+
+LIKE A 5 YEAR OLD:
+  Imagine your home has a rule board on the wall:
+  "Front door key = under the mat"
+  "WiFi password = 12345abc"
+  config.py is that rule board. Everyone checks it.
+
+KEY CODE:
+  ┌─────────────────────────────────────────────────────────┐
+  │  class Settings(BaseSettings):                          │
+  │      google_api_key: str = Field(..., env="GOOGLE_API_KEY") │
+  │      qdrant_url: str = Field(..., env="QDRANT_URL")     │
+  │      retrieval_top_k: int = Field(10, ...)              │
+  │      chunk_size: int = Field(1000, ...)                 │
+  └─────────────────────────────────────────────────────────┘
+
+  Line 13: google_api_key → Reads GOOGLE_API_KEY from .env file
+  Line 30: qdrant_url    → Address of our online database
+  Line 36: retrieval_top_k = 10 → Fetch 10 candidates before reranking
+  Line 38: chunk_size = 1000  → Break documents into 1000-character pieces
+
+WHY IT MATTERS:
+  Without this file, every developer would hardcode API keys directly
+  in code. That's dangerous (hackers can steal them from GitHub).
+  pydantic-settings validates types too — if you put a word where
+  a number is expected, it catches the error at startup.
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+FILE 2: app/rag/ingestion.py  (217 lines) — THE LIBRARIAN
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+WHAT IT DOES:
+  Takes your PDF/DOCX/TXT files → reads every word, table, and page →
+  breaks them into small chunks → converts to numbers (embeddings) →
+  stores in Qdrant database. Later, it can search those numbers super fast.
+
+LIKE A 5 YEAR OLD:
+  Imagine you have 100 books. You tear each book into small strips of paper
+  (chunks). You write a secret number code on each strip that describes
+  what it's about. You put all strips in a magic box (Qdrant).
+  Later, when someone asks a question, the box finds the right strips
+  by matching number codes. That's ingestion!
+
+KEY FUNCTIONS:
+
+  1. extract_with_docling(file_path)  [lines 52-90]
+     ┌────────────────────────────────────────────────┐
+     │  converter = DocumentConverter()               │
+     │  result = converter.convert(file_path)         │
+     │  full_md = doc.export_to_markdown()            │
+     │  pages = full_md.split("<!-- page break -->")  │
+     └────────────────────────────────────────────────┘
+     Uses Docling library (powerful PDF reader) to extract:
+     - Text (every paragraph, split by page)
+     - Tables (separately, with context)
+     Metadata saved: source filename, page number, content type
+
+  2. get_dense_embeddings()  [lines 36-40]
+     ┌────────────────────────────────────────────────┐
+     │  return GoogleGenerativeAIEmbeddings(          │
+     │      model="models/gemini-embedding-001"       │
+     │  )                                             │
+     └────────────────────────────────────────────────┘
+     Converts text to 768-dimensional number vectors using Gemini.
+     These numbers capture the MEANING of the text.
+     "cat" and "kitten" will have similar number patterns.
+
+  3. get_sparse_embeddings()  [lines 43-45]
+     ┌────────────────────────────────────────────────┐
+     │  return SparseTextEmbedding(                   │
+     │      model_name="Qdrant/bm25"                  │
+     │  )                                             │
+     └────────────────────────────────────────────────┘
+     BM25 is classic keyword search (like old Google).
+     Great for exact terms: "Q3 2024", "EBITDA", names of people.
+
+  4. ingest_documents(documents)  [lines 106-138]
+     ┌────────────────────────────────────────────────┐
+     │  # Deduplicate by MD5 hash                     │
+     │  h = hashlib.md5(doc.page_content.encode())    │
+     │  if h not in seen_hashes:                      │
+     │      unique_docs.append(doc)                   │
+     └────────────────────────────────────────────────┘
+     SMART DEDUPLICATION: Creates an MD5 fingerprint of each chunk.
+     If you upload the same file twice, it won't store duplicates.
+     Saves money and storage space.
+
+  5. ensure_collection()  [lines 58-72]
+     Creates HYBRID collection in Qdrant with:
+     - "dense" vectors (768 dimensions, cosine distance)
+     - "sparse" vectors (BM25 keyword index)
+     Both live in the SAME collection for hybrid search.
+
+WHY IT MATTERS:
+  This is the foundation. Without good ingestion:
+  - Missing content → wrong answers
+  - Duplicates → waste space → slower search
+  - No metadata → can't filter by document or page
+  - Wrong chunk size → too small = loses context,
+                       too big = floods the AI with noise
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+FILE 3: app/rag/retriever.py  (172 lines) — THE SMART SEARCHER
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+WHAT IT DOES:
+  When you ask a question, this file:
+  1. Uses an AI to extract hidden filters from your question
+  2. Runs HYBRID search (dense meaning + sparse keywords combined)
+  3. Returns the best matching document chunks
+
+LIKE A 5 YEAR OLD:
+  You walk into a library and ask "I want a fun dinosaur book for kids."
+  A smart librarian hears:
+  - "fun" → for children (filter: age=kids)
+  - "dinosaur" → topic keyword (sparse match)
+  - "book that is exciting" → meaning (dense match)
+  She combines all those clues to find the PERFECT book.
+  That's the hybrid retriever!
+
+KEY CODE:
+
+  1. RAGFilters Schema  [lines 29-36]
+     ┌────────────────────────────────────────────────┐
+     │  class RAGFilters(BaseModel):                  │
+     │      source: Optional[str]   # document name  │
+     │      content_type: Optional[str]  # text/table│
+     │      page: Optional[int]     # page number    │
+     └────────────────────────────────────────────────┘
+     Structured schema that LLM fills in based on your query.
+     Example: "Show me page 5 of the annual report"
+     → Fills: source="annual-report", page=5
+
+  2. _get_relevant_documents()  [lines 59-83]
+     ┌────────────────────────────────────────────────┐
+     │  # Step 1: LLM extracts filters                │
+     │  filters = self._extract_filters(query)        │
+     │                                                │
+     │  # Step 2: Hybrid search                       │
+     │  candidates = vs.similarity_search(            │
+     │      query, k=self.top_k, filter=filters       │
+     │  )                                             │
+     │                                                │
+     │  # Step 3: Rerank                              │
+     │  candidates = reranker.rerank(query, candidates)│
+     └────────────────────────────────────────────────┘
+     This is the CORE of the RAG system.
+     3 layers of intelligence stack on top of each other.
+
+  3. MultiQueryRetriever  [lines 106-130]
+     ┌────────────────────────────────────────────────┐
+     │  def _generate_queries(self, query):           │
+     │      # LLM generates 3 different versions:    │
+     │      # "Apple revenue Q3" → also asks:        │
+     │      # "Apple quarterly earnings 2024"        │
+     │      # "AAPL financial results third quarter" │
+     └────────────────────────────────────────────────┘
+     Generates multiple query variations to cast a wider net.
+     Different phrasings often find different relevant chunks.
+     All results are deduplicated before returning.
+
+HYBRID SEARCH — Why it's better:
+  Dense only  → Finds "earnings" when you said "revenue" ✅
+               Misses "Q3 2024" exact term sometimes ❌
+  Sparse only → Finds "Q3 2024" exactly ✅
+               Misses related concepts ❌
+  HYBRID      → Finds BOTH ✅✅ via Reciprocal Rank Fusion
+  Reranker    → Re-scores all results with a smarter model ✅✅✅
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+FILE 4: app/rag/reranker.py  (57 lines) — THE JUDGE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+WHAT IT DOES:
+  Takes 10 candidate search results → reads each one deeply alongside
+  your question → scores them from most to least relevant → returns top 5.
+
+LIKE A 5 YEAR OLD:
+  You asked "best chocolate cake recipe."
+  10 cookbooks are placed in front of you.
+  A judge reads your question AND each cookbook page together
+  and scores: "Book 3 is 9.8/10, Book 7 is 4.2/10..."
+  You keep the top 5 highest-scored ones. That's reranking!
+
+KEY CODE:
+  ┌────────────────────────────────────────────────────────┐
+  │  def rerank(self, query, documents):                   │
+  │      pairs = [(query, doc.page_content) for doc...]   │
+  │      scores = model.predict(pairs)  # cross-encoder   │
+  │      sorted_docs = sorted(zip(scores, docs),          │
+  │                           key=lambda x: x[0],         │
+  │                           reverse=True)               │
+  │      return [doc for score, doc in sorted_docs[:top_n]]│
+  └────────────────────────────────────────────────────────┘
+
+  Model used: BAAI/bge-reranker-base (runs locally, free)
+  Type: Cross-Encoder (reads query + document TOGETHER — more accurate
+        than bi-encoders which read them separately)
+
+WHY IT MATTERS:
+  Embedding models are FAST but approximate.
+  The reranker is SLOWER but much more accurate.
+  By using fast embeddings first (top 10), then slow reranking (top 5),
+  we get the BEST of both worlds: speed AND accuracy.
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+FILE 5: app/graph/workflow.py  (254 lines) — THE TRAFFIC CONTROLLER
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+WHAT IT DOES:
+  This is the BRAIN of the entire system.
+  Uses LangGraph to build a state machine (like a flowchart) that:
+  - Holds all information as "state"
+  - Routes between agents based on decisions
+  - Loops back if the quality check fails
+  - Saves conversation checkpoints in SQLite
+
+LIKE A 5 YEAR OLD:
+  Think of a relay race. 4 runners (agents) each run their part:
+  Runner 1 (Supervisor): "Who should run next?"
+  Runner 2 (RAG):        "I'll search the books!"
+  Runner 3 (Synthesis):  "I'll write the answer!"
+  Runner 4 (Critique):   "Is the answer good enough?"
+  If Runner 4 says NO → the baton goes back to Runner 3.
+  LangGraph draws the track they run on. That's the workflow!
+
+KEY CODE:
+
+  1. AgentState (lines 40-53)
+     ┌────────────────────────────────────────────────┐
+     │  class AgentState(TypedDict):                  │
+     │      messages: List[BaseMessage]               │
+     │      query: str          # original question   │
+     │      rag_context: str    # what RAG found      │
+     │      web_context: str    # what web found      │
+     │      draft_answer: str   # synthesis output    │
+     │      final_answer: str   # approved answer     │
+     │      critique: str       # evaluator feedback  │
+     │      iterations: int     # loop counter        │
+     │      route: str          # which agents to use │
+     └────────────────────────────────────────────────┘
+     This is a "shared memory" that passes between all agents.
+     Each agent reads what it needs and writes what it produces.
+     LangGraph automatically merges updates from each node.
+
+  2. build_graph()  (lines 157-196)
+     ┌────────────────────────────────────────────────┐
+     │  graph.add_node("supervisor", supervisor_node) │
+     │  graph.add_node("rag_node", rag_node)          │
+     │  graph.add_node("web_node", web_node)          │
+     │  graph.add_node("synthesis_node", ...)         │
+     │  graph.add_node("critique_node", ...)          │
+     │                                                │
+     │  graph.add_edge(START, "supervisor")           │
+     │  graph.add_conditional_edges(                  │
+     │      "supervisor", route_supervisor, {...}     │
+     │  )                                             │
+     │  graph.add_edge("synthesis_node",              │
+     │                  "critique_node")              │
+     │  graph.add_conditional_edges(                  │
+     │      "critique_node", route_critique,          │
+     │      {"synthesis_node": ..., "end": END}       │
+     │  )                                             │
+     └────────────────────────────────────────────────┘
+     This literally draws the arrows between agent boxes.
+     Conditional edges = arrows that go different ways
+     based on a condition (like "GOOD" vs "REVISE").
+
+  3. SQLite Checkpointing  (lines 201-215)
+     ┌────────────────────────────────────────────────┐
+     │  with SqliteSaver.from_conn_string(db_path):   │
+     │      graph = build_graph(checkpointer)         │
+     └────────────────────────────────────────────────┘
+     Every step is saved to a local SQLite database.
+     This means: if the app crashes mid-way through a query,
+     it can RESUME from where it stopped. Also enables
+     multi-turn memory (remembers previous questions).
+
+WHY IT MATTERS:
+  Without LangGraph, you'd manually write:
+    "if route == rag: call rag. if route == web: call web.
+     call synthesis. call critique. if bad, loop again."
+  With LangGraph:
+    You draw the graph once → it handles all routing,
+    state passing, loops, and parallelism automatically.
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+FILE 6: app/agents/rag_agent.py  (74 lines) — THE DOCUMENT RESEARCHER
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+WHAT IT DOES:
+  Takes a question → searches the knowledge base using HybridRetriever →
+  formats all retrieved chunks → sends to Gemini to summarise and
+  organise the findings into structured markdown with source citations.
+
+LIKE A 5 YEAR OLD:
+  You ask a librarian a question.
+  She runs to the shelves, pulls out 5 relevant books,
+  reads the right pages, takes notes, and comes back with
+  a clear, organized summary. That's the RAG agent!
+
+KEY CODE:
+  ┌────────────────────────────────────────────────────────┐
+  │  docs = self.retriever.get_relevant_documents(query)   │
+  │                                                        │
+  │  # Format with citations                               │
+  │  f"[Doc {i}] Source: {meta['source']} | Page: {page}" │
+  │                                                        │
+  │  # LLM organizes the findings                         │
+  │  chain = RAG_PROMPT | llm                              │
+  │  response = chain.invoke({"query": q, "context": ctx}) │
+  └────────────────────────────────────────────────────────┘
+
+PROMPT used:
+  "You are a precise research agent. Given the retrieved chunks,
+   extract ALL relevant information. Be thorough. Include facts,
+   figures, tables. Cite source and page for each fact."
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+FILE 7: app/agents/web_agent.py  (73 lines) — THE INTERNET SEARCHER
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+WHAT IT DOES:
+  Uses Tavily API to search the live internet.
+  Returns 5 real-time web results with URLs, titles, content.
+  Then uses Gemini to clean, organise, and summarise those results.
+
+LIKE A 5 YEAR OLD:
+  You want to know today's cricket score.
+  Your books don't have it (too old).
+  The web agent goes to the internet right now,
+  finds the score, and brings it back. That's Tavily!
+
+KEY CODE:
+  ┌────────────────────────────────────────────────────────┐
+  │  tool = TavilySearchResults(max_results=5)             │
+  │  raw_results = tool.invoke({"query": query})           │
+  │                                                        │
+  │  # Each result has: title, url, content               │
+  │  f"[Web {i}] {r['title']}\nURL: {r['url']}\n{content}"│
+  └────────────────────────────────────────────────────────┘
+
+WHY TAVILY?
+  Unlike regular Google search, Tavily is built for AI.
+  It returns clean extracted text (not HTML).
+  Free tier: 1,000 searches/month.
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+FILE 8: app/agents/synthesis_agent.py  (63 lines) — THE ANSWER WRITER
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+WHAT IT DOES:
+  Gets both the RAG context AND the web context.
+  Merges them intelligently into ONE coherent answer.
+  Highlights conflicts between sources if they disagree.
+  Always cites where each fact came from.
+
+LIKE A 5 YEAR OLD:
+  You have notes from the library AND notes from the internet.
+  The synthesis agent is like a smart student who combines
+  BOTH sets of notes into one clean essay. That's synthesis!
+
+KEY CODE (the prompt is the most important part):
+  ┌────────────────────────────────────────────────────────┐
+  │  "Synthesise BOTH sources into one coherent answer.   │
+  │   Prioritise accuracy; cite sources inline.           │
+  │   Highlight contradictions between sources.           │
+  │   End with a Sources section."                        │
+  └────────────────────────────────────────────────────────┘
+
+PROMPT ENGINEERING NOTE:
+  temperature=0.1 is used here (slight creativity for writing quality)
+  vs temperature=0 for analytical agents (pure factual mode).
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+FILE 9: app/agents/critique_agent.py  (73 lines) — THE QUALITY GUARD
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+WHAT IT DOES:
+  Reads the generated answer AND all source documents.
+  Checks every claim against the sources.
+  If everything is accurate and complete → returns "GOOD"
+  If anything is wrong/missing → returns "REVISE: [specific issues]"
+  The workflow loops back to synthesis if REVISE is returned.
+
+LIKE A 5 YEAR OLD:
+  Your teacher marks your homework. If it's perfect: "Gold star! ⭐"
+  If something is wrong: "Fix question 3 and question 7."
+  You fix it and give it back. She checks again. That's the critique loop!
+
+KEY CODE:
+  ┌────────────────────────────────────────────────────────┐
+  │  # Evaluates 4 criteria:                               │
+  │  "1. FAITHFULNESS: Every claim is in the context      │
+  │   2. COMPLETENESS: Full question is answered          │
+  │   3. ACCURACY: Numbers/dates are correct              │
+  │   4. CLARITY: Well-structured and readable"           │
+  │                                                        │
+  │  # Returns one of two things:                         │
+  │  "GOOD"                      ← All criteria pass      │
+  │  "REVISE: [specific notes]"  ← Fix these issues       │
+  └────────────────────────────────────────────────────────┘
+
+THE LOOP:
+  critique_node → "GOOD" → END (final answer delivered)
+  critique_node → "REVISE" → synthesis_node (rewrite)
+  Max 5 iterations to prevent infinite loops.
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+FILE 10: app/mcp/server.py  (258 lines) — THE TOOLBOX
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+WHAT IT DOES:
+  Runs a standalone MCP (Model Context Protocol) server.
+  Other AI systems (like Claude Desktop) can connect to it
+  and use its 5 tools as if they were their own.
+
+LIKE A 5 YEAR OLD:
+  Imagine a toolbox that any worker can borrow.
+  Worker A (Claude) says "I need a hammer" (hybrid_search).
+  Toolbox sends the hammer. Worker uses it. Returns it.
+  That's what MCP enables — AI-to-AI tool sharing!
+
+THE 5 TOOLS:
+
+  Tool 1: hybrid_search
+  ┌────────────────────────────────────────────────────────┐
+  │  Searches the Qdrant knowledge base                    │
+  │  Input: {"query": "...", "top_k": 5}                   │
+  │  Output: Top 5 matching document chunks with scores    │
+  └────────────────────────────────────────────────────────┘
+
+  Tool 2: web_search
+  ┌────────────────────────────────────────────────────────┐
+  │  Searches the live internet via Tavily                 │
+  │  Input: {"query": "...", "max_results": 5}             │
+  │  Output: 5 live web results with URLs                  │
+  └────────────────────────────────────────────────────────┘
+
+  Tool 3: summarise_docs
+  ┌────────────────────────────────────────────────────────┐
+  │  Summarises a list of document texts                   │
+  │  Input: {"documents": [...], "focus": "revenue"}       │
+  │  Output: Concise paragraph summary                     │
+  └────────────────────────────────────────────────────────┘
+
+  Tool 4: extract_entities
+  ┌────────────────────────────────────────────────────────┐
+  │  Finds names, orgs, dates, numbers in text             │
+  │  Input: {"text": "..."}                                │
+  │  Output: PEOPLE: ... ORGANISATIONS: ... DATES: ...     │
+  └────────────────────────────────────────────────────────┘
+
+  Tool 5: calculate  (SAFE — no eval() used!)
+  ┌────────────────────────────────────────────────────────┐
+  │  Evaluates math expressions SAFELY using Python AST    │
+  │  Input: {"expression": "(10 + 5) * 2 / 3"}            │
+  │  Output: "(10 + 5) * 2 / 3 = 10.0"                    │
+  │  SECURITY: Uses ast.parse() not eval()                 │
+  │  Rejects: "import os" or any non-math expression       │
+  └────────────────────────────────────────────────────────┘
+
+CONNECT TO CLAUDE DESKTOP:
+  Add to claude_desktop_config.json:
+  {
+    "mcpServers": {
+      "multi agent hybrid": {
+        "command": "python",
+        "args": ["-m", "app.mcp.server"],
+        "cwd": "/path/to/project"
+      }
+    }
+  }
+  Now Claude Desktop can use all 5 tools!
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+FILE 11: app/main.py  (319 lines) — THE FACE (Streamlit UI)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+WHAT IT DOES:
+  The web interface users see and interact with.
+  Upload files → Chat → See answers with sources → View agent traces.
+
+LIKE A 5 YEAR OLD:
+  This is the window of the shop. The back-end is the kitchen.
+  Customers (users) see the window (UI) and place orders (questions).
+  The kitchen (agents) cooks the food (answers) and the window displays it.
+
+KEY FEATURES IN CODE:
+
+  1. File Uploader (lines 126-144)
+     ┌────────────────────────────────────────────────┐
+     │  uploaded_files = st.file_uploader(            │
+     │      "Upload files",                           │
+     │      type=["pdf", "docx", "txt", "md"],        │
+     │      accept_multiple_files=True                │
+     │  )                                             │
+     └────────────────────────────────────────────────┘
+     Drag and drop multiple files → instantly ingested to Qdrant.
+
+  2. Chat Interface (lines 195-270)
+     ┌────────────────────────────────────────────────┐
+     │  if query := st.chat_input("Ask anything..."):  │
+     │      result = run_query(query, thread_id)       │
+     │      st.markdown(result["final_answer"])        │
+     └────────────────────────────────────────────────┘
+     Clean chat UI. Each conversation has a unique thread_id
+     for memory continuity.
+
+  3. Agent Route Badges (custom HTML/CSS)
+     Shows which path the agent took:
+     🟢 rag_agent  → searched your documents
+     🔵 web_agent  → searched the internet
+     🟣 both       → searched both sources
+
+  4. LangSmith Trace Link (line 253)
+     ┌────────────────────────────────────────────────┐
+     │  st.caption(f"📡 View LangSmith Trace: {url}") │
+     └────────────────────────────────────────────────┘
+     Every answer has a clickable link to its full trace.
+
+  5. Session State Management
+     ┌────────────────────────────────────────────────┐
+     │  if "chat_history" not in st.session_state:    │
+     │      st.session_state.chat_history = []        │
+     │  if "thread_id" not in st.session_state:       │
+     │      st.session_state.thread_id = uuid4()      │
+     └────────────────────────────────────────────────┘
+     Remembers the full conversation even after page refresh.
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+FILE 12: tests/test_agents.py  (160 lines) — THE QUALITY CHECKS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+WHAT IT DOES:
+  12 automated tests that verify every component works correctly.
+  Run with: pytest tests/ -v
+
+LIKE A 5 YEAR OLD:
+  Before the toy goes to the shop, a quality checker tests it:
+  "Does it turn on? ✅ Does it play music? ✅ Is it safe? ✅"
+  Tests do the same for code!
+
+TEST GROUPS:
+  TestCrossEncoderReranker (3 tests)
+  - test_rerank_returns_top_n
+  - test_rerank_handles_empty_docs
+  - test_rerank_handles_model_failure
+
+  TestMCPCalculator (4 tests)
+  - test_basic_arithmetic:      "2 + 2" → "4"
+  - test_complex_expression:    "(10+5)*2/3" → "10.0"
+  - test_invalid_expression:    "import os" → ERROR (safety check!)
+  - test_power_operation:       "2 ** 10" → "1024"
+
+  TestIngestion (2 tests)
+  - test_deduplication:         Same doc twice → stored once only
+  - test_text_extraction:       Text properly chunked with metadata
+
+  TestAgentRouting (5 tests)
+  - test_routing_web:           route="web_agent" → "web_node"
+  - test_routing_both:          route="both" → "both_node"
+  - test_critique_ends_on_good: final_answer set → route to END
+  - test_critique_loops_on_revise: no final_answer → loop back
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+FILE 13: .github/workflows/ci-cd.yml  (74 lines) — AUTO-DEPLOY ROBOT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+WHAT IT DOES:
+  Every time you push code to GitHub:
+  Step 1 → Runs all tests automatically
+  Step 2 → Builds a Docker image (if tests pass)
+  Step 3 → Pushes image to Docker Hub
+  Step 4 → Triggers Render.com to deploy the new version
+
+LIKE A 5 YEAR OLD:
+  Every time you add a new Lego piece to your creation,
+  a robot automatically checks if the whole thing still stands,
+  takes a photo (Docker image), and puts it in the toy store (Render).
+  You never have to deploy manually!
+
+3 JOBS IN THE PIPELINE:
+  1. test:   Lint + pytest
+  2. build:  Docker build + push to Docker Hub
+  3. deploy: Trigger Render webhook
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+FILE 14: Dockerfile  (52 lines) — THE RECIPE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+WHAT IT DOES:
+  A recipe that creates a portable, reproducible app container.
+  Anyone with Docker can run the app identically on any computer.
+
+LIKE A 5 YEAR OLD:
+  Imagine a recipe card. It says:
+  "Start with a blank kitchen (Python 3.11 slim).
+   Install these tools (apt-get install...).
+   Add my cookbooks (COPY requirements.txt).
+   Practice the recipe (pip install).
+   Hire a chef who isn't the boss (non-root user).
+   Open the restaurant at door 8501 (EXPOSE 8501)."
+  Docker reads this card and creates an identical kitchen anywhere!
+
+KEY LINES:
+  Line 2:  FROM python:3.11-slim AS builder    ← Start clean
+  Line 7:  RUN apt-get install poppler-utils   ← PDF tools
+  Line 11: COPY requirements.txt .             ← Copy library list
+  Line 12: RUN pip install -r requirements.txt ← Install everything
+  Line 35: RUN useradd -m multi agent hybrid              ← Security: non-root
+  Line 41: EXPOSE 8501                         ← Open web port
+  Line 48: HEALTHCHECK ...                     ← Monitor if app is alive
+  Line 51: CMD ["streamlit", "run", ...]       ← Start command
+
+MULTI-STAGE BUILD (advanced):
+  Stage 1 (builder): Installs all dependencies
+  Stage 2 (runtime): Copies ONLY what's needed from builder
+  Result: Smaller final image (faster to download/start)
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ PART 6 — TECHNOLOGY STACK (What Each Tool Does)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+TOOL            | ROLE                     | ANALOGY (5-year-old)
+─────────────────────────────────────────────────────────────────────────────────
+Gemini 2.0 Flash| The AI brain (LLM)       | The smart kid who writes answers
+Gemini Embed 001| Meaning → numbers        | Translator to secret number language
+BM25 / FastEmbed| Keyword matching         | Finding exact words in a book index
+Qdrant Cloud    | Vector database          | Magic filing cabinet for number codes
+BAAI Reranker   | Deep result scoring      | Teacher marking each answer 1-10
+LangGraph       | Agent orchestration      | Race track for the agent relay race
+LangSmith       | Tracing & monitoring     | CCTV camera for every agent step
+Tavily          | Live web search          | Sending someone to the internet
+MCP Server      | AI tool protocol         | Shared toolbox between AI systems
+Docling         | PDF/DOCX reader          | Super fast speed reader for documents
+Streamlit       | Web UI                   | The shop window
+SQLite          | Memory database          | Notepad for remembering conversations
+Docker          | App container            | Lunchbox that works anywhere
+GitHub Actions  | Auto-deploy pipeline     | Robot that deploys when you push code
+Render/Streamlit| Free cloud hosting       | Free storefront on the internet
+pydantic        | Data validation          | Bouncer who checks IDs at the door
+pytest          | Automated testing        | Quality inspector for the code
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ PART 7 — KEY DESIGN CONCEPTS EXPLAINED SIMPLY
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+CONCEPT 1: RAG (Retrieval-Augmented Generation)
+  Normal AI: "I'll answer from my training data" → might be wrong/old
+  RAG AI:    "I'll first SEARCH your actual documents, then answer" → accurate
+  Like: Open-book exam vs. closed-book exam. Open-book is always more accurate.
+
+CONCEPT 2: Hybrid Search
+  Dense only  = Understanding meaning ("cat" matches "kitten") ✅
+               But misses exact keywords sometimes ❌
+  Sparse only = Exact keyword match ("Q3 2024") ✅
+               But misses meaning ❌
+  HYBRID      = Both combined via Reciprocal Rank Fusion ✅✅
+
+CONCEPT 3: Multi-Agent System
+  Single AI: One brain doing everything → gets confused, makes errors
+  Multi-Agent: Specialist team, each expert at one thing → accurate results
+  Like: A hospital with specialists vs. one doctor doing everything.
+
+CONCEPT 4: LangGraph State Machine
+  Old way: if/else spaghetti code → hard to debug, hard to extend
+  LangGraph: Visual graph with nodes and edges → clear, scalable, testable
+  Like: A flowchart vs. a wall of confusing instructions.
+
+CONCEPT 5: LangSmith Observability
+  Without it: AI is a black box. You see input → output. No idea what happened.
+  With it: Every token, every decision, every tool call is logged and visible.
+  Like: Flying blind vs. having a full cockpit dashboard.
+
+CONCEPT 6: Self-Critiquing Loop
+  AI writes answer → AI checks its OWN answer → AI improves if needed.
+  This pattern is called "Reflection" or "Constitutional AI".
+  Like: Writing an essay, then proofreading it yourself before submitting.
+
+CONCEPT 7: MCP (Model Context Protocol)
+  A standard way for AI systems to share tools.
+  Like USB ports for computers — any device works with any computer.
+  Any AI with MCP support (Claude, etc.) can use your tools.
+
+CONCEPT 8: Chunking
+  Documents are too large for AI to read at once.
+  Solution: Break into 1,000-character pieces with 200-char overlaps.
+  Overlap prevents losing meaning at chunk boundaries.
+  Like: Reading a book chapter by chapter, with a reminder of the
+  last page at the start of each new chapter.
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ PART 8 — QUICK START (First Time Setup)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+STEP 1 — Get the code
+  git clone https://github.com/avinash1041/multi-agent-hybrid-rag.git
+  cd multi-agent-hybrid-rag
+
+STEP 2 — Get 4 free API keys (takes ~10 minutes total)
+  A. Google Gemini:  aistudio.google.com/apikey         → GOOGLE_API_KEY
+  B. LangSmith:      smith.langchain.com → Settings     → LANGCHAIN_API_KEY
+  C. Qdrant Cloud:   cloud.qdrant.io → Create cluster   → QDRANT_URL + QDRANT_API_KEY
+  D. Tavily:         tavily.com → Dashboard             → TAVILY_API_KEY
+
+STEP 3 — Configure
+  cp .env.example .env
+  (Open .env and paste your 4 API keys)
+
+STEP 4 — Install & Run
+  pip install -r requirements.txt
+  streamlit run app/main.py
+  Open: http://localhost:8501
+
+STEP 5 — Upload a document and ask a question!
+  → Drag your PDF to the sidebar
+  → Type "Summarise the key points" in the chat
+  → Watch the multi-agent system work its magic ✨
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ PART 9 — FREE DEPLOYMENT OPTIONS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+OPTION A — Streamlit Cloud (EASIEST, Recommended)
+  1. Push code to GitHub
+  2. Go to share.streamlit.io
+  3. Connect your GitHub repo
+  4. Set app/main.py as entry point
+  5. Add secrets (copy from .env)
+  6. Click Deploy!
+  Your app gets a public URL like: yourname.streamlit.app
+
+OPTION B — Render.com (More control)
+  1. render.com → New Web Service → Connect GitHub
+  2. Build Command: pip install -r requirements.txt
+  3. Start Command: streamlit run app/main.py --server.port $PORT --server.address 0.0.0.0
+  4. Add environment variables
+  5. Deploy!
+
+OPTION C — Docker locally
+  docker-compose up -d
+  Open: http://localhost:8501
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ PART 10 — PROJECT STATS & SUMMARY
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  Total Files:          29 files
+  Total Lines of Code:  ~1,700+ lines
+  Agents:               5 (Supervisor, RAG, Web, Synthesis, Critique)
+  MCP Tools:            5 (hybrid_search, web_search, summarise, entities, calc)
+  Test Cases:           12 automated tests
+  Technologies Used:    15+ modern AI/ML tools
+  Monthly Cost:         $0 (100% free tiers)
+  Response Time:        ~4-8 seconds per query
+  Supported File Types: PDF, DOCX, TXT, Markdown
+  Deployment Options:   Streamlit Cloud, Render, Railway, HuggingFace, Docker
+
+  WHAT THIS PROVES TO EMPLOYERS:
+  ✅ You can build production AI systems, not just tutorials
+  ✅ You understand RAG, Agents, Vector DBs, and Observability
+  ✅ You follow software engineering best practices (tests, CI/CD, Docker)
+  ✅ You can architect multi-component distributed systems
+  ✅ You work with the latest AI frameworks (LangGraph, MCP, LangSmith)
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ Created for: Avinash | github.com/avinash1041/multi-agent-hybrid-rag
+ This guide: A complete companion to understand every file and concept.
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

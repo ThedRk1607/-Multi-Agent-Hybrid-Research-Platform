@@ -1,0 +1,56 @@
+version: "3.9"
+
+services:
+  # ── OmniRAG Application ───────────────────────────────────────
+  omnirag:
+    build:
+      context: .
+      target: runtime
+    image: omnirag:latest
+    container_name: omnirag_app
+    ports:
+      - "8501:8501"
+    environment:
+      - GOOGLE_API_KEY=${GOOGLE_API_KEY}
+      - LANGCHAIN_API_KEY=${LANGCHAIN_API_KEY}
+      - LANGCHAIN_TRACING_V2=${LANGCHAIN_TRACING_V2:-true}
+      - LANGCHAIN_PROJECT=${LANGCHAIN_PROJECT:-omnirag-production}
+      - QDRANT_URL=${QDRANT_URL}
+      - QDRANT_API_KEY=${QDRANT_API_KEY}
+      - TAVILY_API_KEY=${TAVILY_API_KEY}
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+    volumes:
+      - ./data:/app/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8501/_stcore/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    networks:
+      - omnirag_net
+
+  # ── MCP Server (standalone) ───────────────────────────────────
+  mcp_server:
+    build:
+      context: .
+      target: runtime
+    image: omnirag:latest
+    container_name: omnirag_mcp
+    environment:
+      - GOOGLE_API_KEY=${GOOGLE_API_KEY}
+      - QDRANT_URL=${QDRANT_URL}
+      - QDRANT_API_KEY=${QDRANT_API_KEY}
+      - TAVILY_API_KEY=${TAVILY_API_KEY}
+    command: ["python", "-m", "app.mcp.server"]
+    networks:
+      - omnirag_net
+    restart: unless-stopped
+
+networks:
+  omnirag_net:
+    driver: bridge
+
+volumes:
+  omnirag_data:
