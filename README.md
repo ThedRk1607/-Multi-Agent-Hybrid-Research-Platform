@@ -468,17 +468,3 @@ MIT License — see [LICENSE](LICENSE) for details.
 
 ---
 
-## 🙏 Acknowledgements
-
-Inspired by [laxmimerit/Multi-Agent-Deep-RAG](https://github.com/laxmimerit/Multi-Agent-Deep-RAG).
-Built on top of: LangChain, LangGraph, Qdrant, Docling, Streamlit, MCP.
-
----
-
-<div align="center">
-
-**⭐ Star this repo if it helped you!**
-
-Built with ❤️ for the AI/ML community
-
-</div>
